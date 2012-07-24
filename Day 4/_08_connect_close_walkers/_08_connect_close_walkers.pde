@@ -1,0 +1,71 @@
+int connect_radius = 100;
+
+Walker[] walkers = new Walker[1000];
+
+void setup() {
+  size(900, 510);
+  smooth();
+  background(255);
+  noStroke();
+  
+  for (int i=0; i<walkers.length; i++) {
+    float x = random(0, width);
+    float y = random(0, height);
+    walkers[i] = new Walker(x, y);  
+  }
+}
+
+void draw() {
+
+  // moves the guys
+  for (int i=0; i<walkers.length; i++) {
+    walkers[i].move();
+  }
+  
+  for (int i=1; i<walkers.length; i++) {
+    float d = dist(walkers[i-1].x, walkers[i-1].y, walkers[i].x, walkers[i].y);
+    if (d < connect_radius) {
+      float grey = map(d, 0, connect_radius, 255, 0);
+      stroke(grey, 10);
+      line(walkers[i-1].x, walkers[i-1].y, walkers[i].x, walkers[i].y);
+    }
+  }
+}
+
+void mousePressed() {
+  saveFrame("gen-####.png");
+}
+
+
+
+
+class Walker
+{
+  float x;
+  float y;
+  
+  Walker(float ax, float ay) {
+    x = ax;
+    y = ay;
+  }
+  
+  void display() {
+    fill(100);
+    noStroke();
+    ellipse(x, y, 20, 20);
+  }
+  
+  void move() {
+    x += random(-1, 1);
+    y += random(-1, 1); 
+  }
+}
+
+
+
+
+
+
+
+
+
